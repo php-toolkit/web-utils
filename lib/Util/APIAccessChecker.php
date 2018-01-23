@@ -14,12 +14,17 @@ namespace Inhere\Web;
  */
 class APIAccessChecker
 {
-    /** @var string  */
+    /** @var string */
     private $hostname;
 
     /**
      * The allowed IP address.
      * @var array
+     * [
+     *  '127.0.0.1',
+     *  '::1',
+     *  '172.19.49.*'
+     * ]
      */
     protected $allowedIps;
 
@@ -30,13 +35,13 @@ class APIAccessChecker
     protected $allowedHosts;
 
     /**
-     * APIAccessChecker constructor.
-     * @param array $ips
-     * @param null|array $hosts
+     * ApiAccessCheck constructor.
+     * @param string|array $ips
+     * @param string|array|null $hosts
      */
     public function __construct($ips, $hosts = null)
     {
-        $this->hostname = gethostname();
+        $this->hostname = \defined('HOSTNAME') ? HOSTNAME : explode('.', gethostname())[0];
         $this->allowedIps = (array)$ips;
         $this->allowedHosts = (array)$hosts;
     }
@@ -45,8 +50,12 @@ class APIAccessChecker
      * @param string $clientIp client Ip
      * @return bool
      */
-    public function isAllowedAccess($clientIp)
+    public function isAllowedAccess(string $clientIp): bool
     {
+        if (APP_ENV === APP_DEV || APP_ENV === APP_TEST) {
+            return true;
+        }
+
         if ($this->checkHostname()) {
             return true;
         }
@@ -70,11 +79,10 @@ class APIAccessChecker
 
     /**
      * Check if IP address for securing area matches the given
-     *
      * @param  string $clientIp
      * @return bool
      */
-    private function checkIp($clientIp)
+    private function checkIp(string $clientIp): bool
     {
         // local env
         if ($clientIp === '127.0.0.1' || $clientIp === '::1') {
@@ -85,6 +93,10 @@ class APIAccessChecker
             if (0 === strpos($clientIp, $allowedIp)) {
                 return true;
             }
+
+            if (fnmatch($allowedIp, $clientIp)) {
+                return true;
+            }
         }
 
         return false;
@@ -93,7 +105,7 @@ class APIAccessChecker
     /**
      * @return bool
      */
-    public function checkHostname()
+    public function checkHostname(): bool
     {
         $host = $this->hostname;
 
@@ -109,7 +121,7 @@ class APIAccessChecker
     /**
      * @return array
      */
-    public function getAllowedIps()
+    public function getAllowedIps(): array
     {
         return $this->allowedIps;
     }
@@ -125,7 +137,7 @@ class APIAccessChecker
     /**
      * @return array
      */
-    public function getAllowedHosts()
+    public function getAllowedHosts(): array
     {
         return $this->allowedHosts;
     }
