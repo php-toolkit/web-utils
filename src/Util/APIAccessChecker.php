@@ -6,11 +6,11 @@
  * Time: 22:39
  */
 
-namespace Inhere\Web;
+namespace MyLib\Web;
 
 /**
  * Class APIAccessChecker
- * @package Inhere\Web
+ * @package MyLib\Web
  */
 class APIAccessChecker
 {

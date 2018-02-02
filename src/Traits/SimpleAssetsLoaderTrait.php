@@ -7,11 +7,11 @@
  * File: AssetsRendererTrait.php
  */
 
-namespace Inhere\Web;
+namespace MyLib\Web;
 
 /**
  * Class AssetsRendererTrait
- * @package Inhere\Web
+ * @package MyLib\Web
  */
 trait SimpleAssetsLoaderTrait
 {

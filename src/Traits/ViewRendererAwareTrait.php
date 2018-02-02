@@ -6,11 +6,11 @@
  * Time: 9:12
  */
 
-namespace Inhere\Web;
+namespace MyLib\Web;
 
 /**
  * Trait ViewRendererAwareTrait
- * @package Inhere\Web
+ * @package MyLib\Web
  */
 trait ViewRendererAwareTrait
 {

@@ -6,11 +6,11 @@
  * Time: 14:22
  */
 
-namespace Inhere\Web\Helper;
+namespace MyLib\Web\Helper;
 
 /**
  * Class RespondUtilTrait
- * @package Inhere\Web\Helper
+ * @package MyLib\Web\Helper
  *
  * ```php
  * class Respond extends ResponseCode {

@@ -6,11 +6,11 @@
  * Time: 14:21
  */
 
-namespace Inhere\Web\Helper;
+namespace MyLib\Web\Helper;
 
 /**
  * Class ResponseCode
- * @package Inhere\Web\Helper
+ * @package MyLib\Web\Helper
  */
 class ResponseCode
 {

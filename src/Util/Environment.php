@@ -7,14 +7,14 @@
  * File: Environment.php
  */
 
-namespace Inhere\Web;
+namespace MyLib\Web;
 
-use Inhere\Library\Collections\SimpleCollection;
+use MyLib\Collection\SimpleCollection;
 
 /**
  * mock 环境信息
  * Class Environment
- * @package Inhere\Web
+ * @package MyLib\Web
  */
 class Environment extends SimpleCollection
 {
@@ -46,4 +46,4 @@ class Environment extends SimpleCollection
         return new static($data);
     }
 
-}// end class Environment
+}
