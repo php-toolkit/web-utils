@@ -6,14 +6,14 @@
  * Time: 14:32
  */
 
-namespace App\Components;
+namespace MyLib\Web\Util;
 
 use Swagger\Annotations\Info;
 use Swagger\Annotations\Swagger;
 
 /**
  * Class SwaggerJSON
- * @package App\Components
+ * @package MyLib\Web\Util
  */
 class SwaggerJSON
 {

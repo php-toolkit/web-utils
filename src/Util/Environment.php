@@ -7,14 +7,14 @@
  * File: Environment.php
  */
 
-namespace MyLib\Web;
+namespace MyLib\Web\Util;
 
 use MyLib\Collection\SimpleCollection;
 
 /**
  * mock 环境信息
  * Class Environment
- * @package MyLib\Web
+ * @package MyLib\Web\Util
  */
 class Environment extends SimpleCollection
 {
