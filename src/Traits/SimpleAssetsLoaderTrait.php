@@ -7,11 +7,11 @@
  * File: AssetsRendererTrait.php
  */
 
-namespace MyLib\Web\Traits;
+namespace Toolkit\Web\Traits;
 
 /**
  * Class AssetsRendererTrait
- * @package MyLib\Web\Traits
+ * @package Toolkit\Web\Traits
  */
 trait SimpleAssetsLoaderTrait
 {

@@ -6,11 +6,11 @@
  * Time: 22:39
  */
 
-namespace MyLib\Web\Util;
+namespace Toolkit\Web\Util;
 
 /**
  * Class APIAccessChecker
- * @package MyLib\Web\Util
+ * @package Toolkit\Web\Util
  */
 class APIAccessChecker
 {

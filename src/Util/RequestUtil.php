@@ -6,11 +6,11 @@
  * Time: 下午12:26
  */
 
-namespace MyLib\Web\Util;
+namespace Toolkit\Web\Util;
 
 /**
  * Class RequestHelper
- * @package MyLib\Web\Util
+ * @package Toolkit\Web\Util
  */
 class RequestUtil
 {

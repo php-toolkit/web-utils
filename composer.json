@@ -1,9 +1,9 @@
 {
-  "name": "mylib/web-utils",
+  "name": "toolkit/web-utils",
   "type": "library",
   "description": "a simple web tool library of the php",
   "keywords": ["library"],
-  "homepage": "https://github.com/php-mylib/web-utils",
+  "homepage": "https://github.com/php-toolkit/web-utils",
   "license": "MIT",
   "authors": [
     {
@@ -17,7 +17,7 @@
   },
   "autoload": {
     "psr-4": {
-      "MyLib\\Web\\" : "src/"
+      "Toolkit\\Web\\" : "src/"
     }
   },
   "suggest": {

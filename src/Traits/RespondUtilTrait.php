@@ -6,11 +6,11 @@
  * Time: 14:22
  */
 
-namespace MyLib\Web\Traits;
+namespace Toolkit\Web\Traits;
 
 /**
  * Class RespondUtilTrait
- * @package MyLib\Web\Traits
+ * @package Toolkit\Web\Traits
  *
  * ```php
  * class Respond extends ResponseCode {

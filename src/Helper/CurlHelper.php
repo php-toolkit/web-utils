@@ -6,13 +6,13 @@
  * Time: 10:35
  */
 
-namespace MyLib\Web\Helper;
+namespace Toolkit\Web\Helper;
 
-use MyLib\FileUtil\Directory;
+use Toolkit\FileUtil\Directory;
 
 /**
  * Class CurlHelper
- * @package MyLib\Web\Helper
+ * @package Toolkit\Web\Helper
  */
 class CurlHelper
 {

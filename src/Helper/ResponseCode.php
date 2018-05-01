@@ -6,11 +6,11 @@
  * Time: 14:21
  */
 
-namespace MyLib\Web\Helper;
+namespace Toolkit\Web\Helper;
 
 /**
  * Class ResponseCode
- * @package MyLib\Web\Helper
+ * @package Toolkit\Web\Helper
  */
 class ResponseCode
 {

@@ -6,13 +6,13 @@
  * Time: 9:12
  */
 
-namespace MyLib\Web\Traits;
+namespace Toolkit\Web\Traits;
 
-use MyLib\Web\ViewRenderer;
+use Toolkit\Web\ViewRenderer;
 
 /**
  * Trait ViewRendererAwareTrait
- * @package MyLib\Web\Traits
+ * @package Toolkit\Web\Traits
  */
 trait ViewRendererAwareTrait
 {

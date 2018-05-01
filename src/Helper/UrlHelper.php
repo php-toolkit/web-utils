@@ -6,11 +6,11 @@
  * Use : ...
  */
 
-namespace MyLib\Web\Helper;
+namespace Toolkit\Web\Helper;
 
 /**
  * Class UrlHelper
- * @package MyLib\Web\Helper
+ * @package Toolkit\Web\Helper
  */
 class UrlHelper
 {

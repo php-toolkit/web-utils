@@ -6,11 +6,11 @@
  * Time: 00:44
  */
 
-namespace MyLib\Web\Helper;
+namespace Toolkit\Web\Helper;
 
 /**
  * Class HtmlHelper
- * @package MyLib\Web\Helper
+ * @package Toolkit\Web\Helper
  */
 class HtmlHelper
 {

@@ -6,15 +6,15 @@
  * Time: 17:31
  */
 
-namespace MyLib\Web;
+namespace Toolkit\Web;
 
-use MyLib\FileUtil\File;
-use MyLib\Web\Helper\HtmlHelper;
+use Toolkit\FileUtil\File;
+use Toolkit\Web\Helper\HtmlHelper;
 
 /**
  * Class ViewRenderer
  *  Render PHP view scripts into a PSR-7 Response object
- * @package MyLib\Web
+ * @package Toolkit\Web
  */
 class ViewRenderer
 {
