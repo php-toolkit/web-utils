@@ -8,7 +8,7 @@
 
 namespace Toolkit\Web\Helper;
 
-use Toolkit\FileUtil\Directory;
+use Toolkit\File\Directory;
 
 /**
  * Class CurlHelper

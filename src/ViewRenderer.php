@@ -8,8 +8,9 @@
 
 namespace Toolkit\Web;
 
-use Toolkit\FileUtil\File;
+use Toolkit\File\File;
 use Toolkit\Web\Helper\HtmlHelper;
+use Toolkit\Web\Traits\SimpleAssetsLoaderTrait;
 
 /**
  * Class ViewRenderer

@@ -8,6 +8,8 @@
 
 namespace Toolkit\Web\Traits;
 
+use Toolkit\Web\Helper\ResponseCode;
+
 /**
  * Class RespondUtilTrait
  * @package Toolkit\Web\Traits
