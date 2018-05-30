@@ -36,39 +36,39 @@ class CurlHelper
      * @param string $rename 图片重命名(只写名称，不用后缀) 为空则使用原名称
      * @return string
      */
-    public static function fetchImg(string $imgUrl, string $savePath, string $rename = '')
+    public static function fetchImg(string $imgUrl, string $savePath, string $rename = ''): string
     {
         // e.g. http://static.oschina.net/uploads/user/277/554046_50.jpg?t=34512323
-        if (strpos($imgUrl, '?')) {
-            list($real,) = explode('?', $imgUrl, 2);
+        if (\strpos($imgUrl, '?')) {
+            list($real,) = \explode('?', $imgUrl, 2);
         } else {
             $real = $imgUrl;
         }
 
-        $last = trim(strrchr($real, '/'), '/');
+        $last = \trim(\strrchr($real, '/'), '/');
 
         // special url e.g http://img.blog.csdn.net/20150929103749499
-        if (false === strpos($last, '.')) {
+        if (false === \strpos($last, '.')) {
             $suffix = 'jpg';
             $name = $rename ?: $last;
         } else {
-            $info = pathinfo($real);
+            $info = \pathinfo($real);
             $suffix = $info['extension'] ?: 'jpg';
             $name = $rename ?: $info['filename'];
         }
 
         $imgFile = $savePath . '/' . $name . '.' . $suffix;
 
-        if (file_exists($imgFile)) {
+        if (\file_exists($imgFile)) {
             return $imgFile;
         }
-        $ch = curl_init();
+        $ch = \curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, UrlHelper::encode2($imgUrl));
+        \curl_setopt($ch, CURLOPT_URL, UrlHelper::encode2($imgUrl));
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // 伪造网页来源地址,伪造来自百度的表单提交
-        curl_setopt($ch, CURLOPT_REFERER, 'http://www.baidu.com');
+        \curl_setopt($ch, CURLOPT_REFERER, 'http://www.baidu.com');
 
         $imgData = self::execute($ch);
 
@@ -83,7 +83,8 @@ class CurlHelper
      * @param string $url url
      * @param array $params url params
      * @param array $headers HEADER info
-     * @return string
+     * @return string|false
+     * @throws \RuntimeException
      */
     public static function get(string $url, array $params = [], array $headers = [])
     {
@@ -109,7 +110,8 @@ class CurlHelper
      * @param string $url submit url
      * @param array|string $data post data. array: form data, string: json data
      * @param array $headers HEADER info
-     * @return string
+     * @return string|false
+     * @throws \RuntimeException
      */
     public static function post(string $url, array $data = [], array $headers = [])
     {
@@ -132,21 +134,21 @@ class CurlHelper
      * @param  resource $ch curl handler
      * @param  int $retries 重试
      * @param bool $closeAfterDone
-     * @return string
+     * @return string|false
      * @throws \RuntimeException
      */
     public static function execute($ch, $retries = 3, $closeAfterDone = true)
     {
         $ret = '';
         while ($retries--) {
-            if (($ret = curl_exec($ch)) === false) {
-                $curlErrNo = curl_errno($ch);
+            if (($ret = \curl_exec($ch)) === false) {
+                $curlErrNo = \curl_errno($ch);
 
                 if (!$retries || false === \in_array($curlErrNo, self::$canRetryErrorCodes, true)) {
-                    $curlError = curl_error($ch);
+                    $curlError = \curl_error($ch);
 
                     if ($closeAfterDone) {
-                        curl_close($ch);
+                        \curl_close($ch);
                     }
 
                     throw new \RuntimeException(sprintf('Curl error (code %s): %s', $curlErrNo, $curlError));
@@ -156,7 +158,7 @@ class CurlHelper
             }
 
             if ($closeAfterDone) {
-                curl_close($ch);
+                \curl_close($ch);
             }
             break;
         }

@@ -18,7 +18,7 @@ class UrlHelper
      * @param string $url the URL to be checked
      * @return boolean whether the URL is relative
      */
-    public static function isRelative($url)
+    public static function isRelative(string $url): bool
     {
         return false === strpos($url, '//') && strpos($url, '://') === false;
     }
@@ -27,20 +27,20 @@ class UrlHelper
      * @param $str
      * @return bool
      */
-    public static function isUrl($str)
+    public static function isUrl(string $str): bool
     {
         $rule = '/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i';
 
-        return preg_match($rule, $str) === 1;
+        return \preg_match($rule, $str) === 1;
     }
 
     /**
      * @param $url
      * @return bool
      */
-    public static function isFullUrl($url)
+    public static function isFullUrl(string $url): bool
     {
-        return 0 === strpos($url, 'http:') || 0 === strpos($url, 'https:') || 0 === strpos($url, '//');
+        return 0 === \strpos($url, 'http:') || 0 === strpos($url, 'https:') || 0 === strpos($url, '//');
     }
 
     /**
@@ -48,10 +48,10 @@ class UrlHelper
      * @param mixed $data
      * @return string
      */
-    public static function build($url, $data = null)
+    public static function build(string $url, $data = null): string
     {
-        if ($data && ($param = http_build_query($data))) {
-            $url .= (strpos($url, '?') ? '&' : '?') . $param;
+        if ($data && ($param = \http_build_query($data))) {
+            $url .= (\strpos($url, '?') ? '&' : '?') . $param;
         }
 
         return $url;
@@ -59,10 +59,10 @@ class UrlHelper
 
 
     /**
-     * @param $url
+     * @param string $url
      * @return bool
      */
-    public static function canAccessed($url)
+    public static function canAccessed(string $url): bool
     {
         $url = trim($url);
 
@@ -136,21 +136,25 @@ class UrlHelper
         ']'
     );
 
-    public static function parseUrl($url)
+    /**
+     * @param string $url
+     * @return array
+     */
+    public static function parseUrl(string $url): array
     {
         $result = [];
 
         // Create encoded URL with special URL characters decoded so it can be parsed
         // All other characters will be encoded
-        $encodedURL = str_replace(self::$entities, self::$replacements, urlencode($url));
+        $encodedURL = \str_replace(self::$entities, self::$replacements, urlencode($url));
 
         // Parse the encoded URL
-        $encodedParts = parse_url($encodedURL);
+        $encodedParts = \parse_url($encodedURL);
 
         // Now, decode each value of the resulting array
         if ($encodedParts) {
             foreach ((array)$encodedParts as $key => $value) {
-                $result[$key] = urldecode(str_replace(self::$replacements, self::$entities, $value));
+                $result[$key] = \urldecode(str_replace(self::$replacements, self::$entities, $value));
             }
         }
 
@@ -164,10 +168,10 @@ class UrlHelper
      * //ftp://ud03:password@www.xxx.net/%E4%B8%AD%E6%96%87/%E4%B8%AD%E6%96%87.rar
      * $url2 =  urldecode($url);
      * echo $url1.PHP_EOL.$url2.PHP_EOL;
-     * @param $url
-     * @return mixed|string [type] [description]
+     * @param string $url
+     * @return string
      */
-    public static function encode($url)
+    public static function encode(string $url): string
     {
         $url = trim($url);
 
@@ -176,9 +180,9 @@ class UrlHelper
         }
 
         // 若已被编码的url，将被解码，再继续重新编码
-        $url = urldecode($url);
-        $encodeUrl = urlencode($url);
-        $encodeUrl = str_replace(self::$entities, self::$replacements, $encodeUrl);
+        $url = \urldecode($url);
+        $encodeUrl = \urlencode($url);
+        $encodeUrl = \str_replace(self::$entities, self::$replacements, $encodeUrl);
 
         return $encodeUrl;
     }
@@ -190,10 +194,10 @@ class UrlHelper
      * //ftp://ud03:password@www.xxx.net/%C3%A4%C2%B8%C2%AD%C3%A6%C2%96%C2%87/%C3%A4%C2%B8%C2%AD%C3%A6%C2%96%C2%87.rar
      * $url2 =  urldecode($url);
      * echo $url1.PHP_EOL.$url2;
-     * @param  string $url [description]
-     * @return mixed|string [type]      [description]
+     * @param  string $url
+     * @return string
      */
-    public static function encode2($url)
+    public static function encode2(string $url): string
     {
         $url = trim($url);
 
@@ -202,12 +206,12 @@ class UrlHelper
         }
 
         // 若已被编码的url，将被解码，再继续重新编码
-        $url = urldecode($url);
-        $encodeUrl = rawurlencode(mb_convert_encoding($url, 'utf-8'));
+        $url = \urldecode($url);
+        $encodeUrl = \rawurlencode(\mb_convert_encoding($url, 'utf-8'));
 
         // $url  = rawurlencode($url);
 
-        $encodeUrl = str_replace(self::$entities, self::$replacements, $encodeUrl);
+        $encodeUrl = \str_replace(self::$entities, self::$replacements, $encodeUrl);
 
         return $encodeUrl;
     }

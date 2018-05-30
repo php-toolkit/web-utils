@@ -88,17 +88,14 @@ class RequestUtil
     /**
      * @return array
      */
-    public static function getParsedBody()
+    public static function getParsedBody(): array
     {
         if (self::$parsedBody === false) {
             // post data is json
-            if (
-                !isset($_SERVER['HTTP_CONTENT_TYPE']) || !($type = $_SERVER['HTTP_CONTENT_TYPE']) || strpos($type,
-                    '/json') <= 0
-            ) {
+            if (!($type = $_SERVER['HTTP_CONTENT_TYPE'] ?? null) || \strpos($type, '/json') <= 0) {
                 self::$parsedBody = &$_POST;
             } else {
-                self::$parsedBody = json_decode(file_get_contents('php://input'), true);
+                self::$parsedBody = \json_decode(\file_get_contents('php://input'), true);
             }
         }
 
@@ -106,15 +103,11 @@ class RequestUtil
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return bool
      */
-    public static function hasParam($key)
+    public static function hasParam(string $key): bool
     {
-        if (!$key || !\is_string($key)) {
-            return false;
-        }
-
         return isset($_POST[$key]) ? true : isset($_GET[$key]);
     }
 
@@ -123,15 +116,15 @@ class RequestUtil
         if (!$_POST || !\is_array($_POST)) {
             $_POST = [];
         } else {
-            $_POST = array_map(array(DataHelper::class, 'htmlentitiesUTF8'), $_POST);
+            $_POST = array_map('htmlspecialchars', $_POST);
         }
     }
 
     /**
      * Get all values from $_POST/$_GET
-     * @return mixed
+     * @return array
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return $_POST + $_GET;
     }
@@ -148,10 +141,10 @@ class RequestUtil
      *    ]
      * @return array
      */
-    public static function buildQueryParams($data, $separator = '/')
+    public static function buildQueryParams($data, $separator = '/'): array
     {
-        $arrData = \is_string($data) ? explode($separator, $data) : $data;
-        $arrData = array_values(array_filter($arrData));
+        $arrData = \is_string($data) ? \explode($separator, $data) : $data;
+        $arrData = \array_values(\array_filter($arrData));
         $newArr = [];
         $count = \count($arrData); #统计
 
@@ -183,8 +176,8 @@ class RequestUtil
      */
     public static function server($name, $default = '')
     {
-        $name = strtoupper($name);
+        $name = \strtoupper($name);
 
-        return isset($_SERVER[$name]) ? trim($_SERVER[$name]) : $default;
+        return isset($_SERVER[$name]) ? \trim($_SERVER[$name]) : $default;
     }
 }

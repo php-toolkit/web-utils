@@ -21,9 +21,9 @@ class HtmlHelper
      * @return string the encoded data
      * @see http://www.php.net/manual/en/function.htmlspecialchars.php
      */
-    public static function encode($text, $charset = 'utf-8')
+    public static function encode($text, $charset = 'utf-8'): string
     {
-        return htmlspecialchars($text, ENT_QUOTES, $charset);
+        return \htmlspecialchars($text, ENT_QUOTES, $charset);
     }
 
     /**
@@ -32,9 +32,9 @@ class HtmlHelper
      * @return string the decoded data
      * @see http://www.php.net/manual/en/function.htmlspecialchars-decode.php
      */
-    public static function decode($text)
+    public static function decode($text): string
     {
-        return htmlspecialchars_decode($text, ENT_QUOTES);
+        return \htmlspecialchars_decode($text, ENT_QUOTES);
     }
 
     /**
@@ -44,7 +44,7 @@ class HtmlHelper
      * @return array the encoded data
      * @see http://www.php.net/manual/en/function.htmlspecialchars.php
      */
-    public static function encodeArray($data, $charset = 'utf-8')
+    public static function encodeArray($data, $charset = 'utf-8'): array
     {
         $d = [];
 
@@ -137,7 +137,7 @@ class HtmlHelper
      * @param   string $string Sting to be cleaned.
      * @return  string  Cleaned string
      */
-    public static function stripImages($string)
+    public static function stripImages($string): string
     {
         return preg_replace('#(<[/]?img.*>)#U', '', $string);
     }
@@ -147,7 +147,7 @@ class HtmlHelper
      * @param   string $string Sting to be cleaned.
      * @return  string  Cleaned string
      */
-    public static function stripIframes($string)
+    public static function stripIframes($string): string
     {
         return preg_replace('#(<[/]?iframe.*>)#U', '', $string);
     }
@@ -155,21 +155,21 @@ class HtmlHelper
     /**
      * stripScript
      * @param string $string
-     * @return  mixed
+     * @return string
      */
-    public static function stripScript($string)
+    public static function stripScript(string $string): string
     {
-        return preg_replace('/<script[^>]*>.*?</script>/si', '', $string);
+        return (string)\preg_replace('/<script[^>]*>.*?</script>/si', '', $string);
     }
 
     /**
      * stripStyle
      * @param string $string
-     * @return  mixed
+     * @return string
      */
-    public static function stripStyle($string)
+    public static function stripStyle(string $string): string
     {
-        return preg_replace('/<style[^>]*>.*?</style>/si', '', $string);
+        return (string)\preg_replace('/<style[^>]*>.*?</style>/si', '', $string);
     }
 
     /**
@@ -177,7 +177,7 @@ class HtmlHelper
      * @param bool|true $onlySrc
      * @return array
      */
-    public static function findImages($html, $onlySrc = true)
+    public static function findImages($html, $onlySrc = true): array
     {
         // $preg = '/<img.*?src=[\"|\']?(.*?)[\"|\']?\s.*>/i';
         $preg = '/<img.+src=\"(:?.+.+\.(?:jpg|gif|bmp|bnp|png)\"?).+>/i';
@@ -199,7 +199,7 @@ class HtmlHelper
      * @param string $html
      * @return string
      */
-    public static function minify($html)
+    public static function minify(string $html): string
     {
         $search = [
             '/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/',
@@ -210,6 +210,6 @@ class HtmlHelper
         ];
         $replace = [' ', ' ', '>', '<', '\\1'];
 
-        return preg_replace($search, $replace, $html);
+        return (string)\preg_replace($search, $replace, $html);
     }
 }

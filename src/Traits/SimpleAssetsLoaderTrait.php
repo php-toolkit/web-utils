@@ -29,7 +29,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addTopCssFile($cssFile, string $key = null)
+    public function addTopCssFile($cssFile, string $key = null): self
     {
         return $this->addCssFile($cssFile, 'top', $key);
     }
@@ -39,7 +39,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addBottomCssFile($cssFile, string $key = null)
+    public function addBottomCssFile($cssFile, string $key = null): self
     {
         return $this->addCssFile($cssFile, 'bottom', $key);
     }
@@ -50,7 +50,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addCssFile($cssFile, string $position = 'top', string $key = null)
+    public function addCssFile($cssFile, string $position = 'top', string $key = null): self
     {
         if (\is_array($cssFile)) {
             foreach ($cssFile as $k => $code) {
@@ -78,7 +78,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addTopJsFile($jsFile, string $key = null)
+    public function addTopJsFile($jsFile, string $key = null): self
     {
         return $this->addJsFile($jsFile, 'top', $key);
     }
@@ -88,7 +88,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addBottomJsFile($jsFile, string $key = null)
+    public function addBottomJsFile($jsFile, string $key = null): self
     {
         return $this->addJsFile($jsFile, 'bottom', $key);
     }
@@ -99,7 +99,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addJsFile($jsFile, string $position = 'bottom', string $key = null)
+    public function addJsFile($jsFile, string $position = 'bottom', string $key = null): self
     {
         if (\is_array($jsFile)) {
             foreach ($jsFile as $k => $code) {
@@ -127,7 +127,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addTopCss($cssCode, string $key = null)
+    public function addTopCss($cssCode, string $key = null): self
     {
         return $this->addCss($cssCode, 'top', $key);
     }
@@ -137,7 +137,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addBottomCss($cssCode, string $key = null)
+    public function addBottomCss($cssCode, string $key = null): self
     {
         return $this->addCss($cssCode, 'bottom', $key);
     }
@@ -148,7 +148,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addCss($cssCode, string $position = 'top', string $key = null)
+    public function addCss($cssCode, string $position = 'top', string $key = null): self
     {
         if (\is_array($cssCode)) {
             foreach ($cssCode as $k => $code) {
@@ -176,7 +176,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addTopJs($jsCode, string $key = null)
+    public function addTopJs($jsCode, string $key = null): self
     {
         return $this->addJs($jsCode, 'top', $key);
     }
@@ -186,7 +186,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addBottomJs($jsCode, string $key = null)
+    public function addBottomJs($jsCode, string $key = null): self
     {
         return $this->addJs($jsCode, 'bottom', $key);
     }
@@ -197,7 +197,7 @@ trait SimpleAssetsLoaderTrait
      * @param string $key
      * @return $this
      */
-    public function addJs($jsCode, string $position = 'bottom', string $key = null)
+    public function addJs($jsCode, string $position = 'bottom', string $key = null): self
     {
         if (\is_array($jsCode)) {
             foreach ($jsCode as $k => $code) {
@@ -229,6 +229,10 @@ trait SimpleAssetsLoaderTrait
         return $this->dumpAssets('top', $echo);
     }
 
+    /**
+     * @param bool $echo
+     * @return null|string
+     */
     public function dumpBottomAssets($echo = true)
     {
         return $this->dumpAssets('bottom', $echo);
