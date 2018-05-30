@@ -20,13 +20,13 @@ trait ViewRendererAwareTrait
      * getRenderer
      * @return ViewRenderer
      */
-    abstract public function getRenderer();
+    abstract public function getRenderer(): ViewRenderer;
 
     /**
      * @param string $view
      * @return string
      */
-    protected function resolveView(string $view)
+    protected function resolveView(string $view): string
     {
         return $view;
     }
@@ -42,7 +42,7 @@ trait ViewRendererAwareTrait
      * @return string
      * @throws \Throwable
      */
-    public function render(string $view, array $data = [], $layout = null)
+    public function render(string $view, array $data = [], $layout = null): string
     {
         return $this->getRenderer()->render($this->resolveView($view), $data, $layout);
     }
@@ -53,7 +53,7 @@ trait ViewRendererAwareTrait
      * @return string
      * @throws \Throwable
      */
-    public function renderPartial($view, array $data = [])
+    public function renderPartial($view, array $data = []): string
     {
         return $this->getRenderer()->fetch($this->resolveView($view), $data);
     }
@@ -65,7 +65,7 @@ trait ViewRendererAwareTrait
      * @return string
      * @throws \Throwable
      */
-    public function renderContent($string, array $data = [], $layout = null)
+    public function renderContent($string, array $data = [], $layout = null): string
     {
         return $this->getRenderer()->renderContent($string, $data, $layout);
     }
