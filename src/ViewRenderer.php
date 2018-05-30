@@ -362,7 +362,7 @@ class ViewRenderer
      * @param string $view
      * @return string
      */
-    protected function getRealView($view): self
+    protected function getRealView($view): string
     {
         $sfx = File::getSuffix($view, true);
         $ext = $this->suffix;
