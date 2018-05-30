@@ -22,13 +22,13 @@ class ViewRenderer
     use SimpleAssetsLoaderTrait;
 
     /** @var string Views file path. */
-    protected $viewsPath;
+    protected $viewsPath = '';
 
     /** @var null|string Default layout file. */
-    protected $layout;
+    protected $layout = '';
 
     /** @var array Attributes for the view */
-    protected $attributes;
+    protected $attributes = [];
 
     /** @var string Default view suffix. */
     protected $suffix = 'php';
@@ -43,7 +43,7 @@ class ViewRenderer
     protected $placeholder = '{__CONTENT__}';
 
     /** @var bool clear html blanks. */
-    protected $minify = true;
+    protected $minify = false;
 
     /**
      * constructor.
@@ -51,7 +51,7 @@ class ViewRenderer
      * @param string $layout
      * @param array $attributes
      */
-    public function __construct($viewsPath = null, $layout = null, array $attributes = [])
+    public function __construct(string $viewsPath = null, string $layout = null, array $attributes = [])
     {
         $this->layout = $layout;
         $this->attributes = $attributes;
@@ -73,7 +73,7 @@ class ViewRenderer
      * @return string
      * @throws \Throwable
      */
-    public function render($view, array $data = [], $layout = null)
+    public function render(string $view, array $data = [], $layout = null): string
     {
         $output = $this->fetch($view, $data);
 
@@ -91,7 +91,7 @@ class ViewRenderer
      * @return string
      * @throws \Throwable
      */
-    public function renderPartial($view, array $data = [])
+    public function renderPartial(string $view, array $data = []): string
     {
         return $this->fetch($view, $data);
     }
@@ -103,7 +103,7 @@ class ViewRenderer
      * @return string
      * @throws \Throwable
      */
-    public function renderBody($content, array $data = [], $layout = null)
+    public function renderBody(string $content, array $data = [], $layout = null): string
     {
         return $this->renderContent($content, $data, $layout);
     }
@@ -115,7 +115,7 @@ class ViewRenderer
      * @return string
      * @throws \Throwable
      */
-    public function renderContent($content, array $data = [], $layout = null)
+    public function renderContent(string $content, array $data = [], $layout = null): string
     {
         // render layout
         if ($layout = $layout ?: $this->layout) {
@@ -138,7 +138,7 @@ class ViewRenderer
      * @return string|null
      * @throws \Throwable
      */
-    public function include($view, array $data = [], $outputIt = true)
+    public function include(string $view, array $data = [], $outputIt = true)
     {
         if ($outputIt) {
             echo $this->fetch($view, $data);
@@ -156,11 +156,11 @@ class ViewRenderer
      * @return mixed
      * @throws \Throwable
      */
-    public function fetch($view, array $data = [])
+    public function fetch(string $view, array $data = [])
     {
         $file = $this->getViewFile($view);
 
-        if (!is_file($file)) {
+        if (!\is_file($file)) {
             throw new \RuntimeException("cannot render '$view' because the view file does not exist. File: $file");
         }
 
@@ -171,14 +171,14 @@ class ViewRenderer
             }
         }
         */
-        $data = array_merge($this->attributes, $data);
+        $data = \array_merge($this->attributes, $data);
 
         try {
-            ob_start();
+            \ob_start();
             $this->protectedIncludeScope($file, $data);
             $output = ob_get_clean();
         } catch (\Throwable $e) { // PHP 7+
-            ob_end_clean();
+            \ob_end_clean();
             throw $e;
         }
 
@@ -193,7 +193,7 @@ class ViewRenderer
      * @param $view
      * @return string
      */
-    public function getViewFile($view)
+    public function getViewFile(string $view): string
     {
         $view = $this->getRealView($view);
 
@@ -204,7 +204,7 @@ class ViewRenderer
      * @param string $file
      * @param array $data
      */
-    protected function protectedIncludeScope($file, array $data)
+    protected function protectedIncludeScope(string $file, array $data)
     {
         extract($data, EXTR_OVERWRITE);
         include $file;
@@ -214,7 +214,7 @@ class ViewRenderer
      * @param string $default
      * @return string
      */
-    public function getPageTitle(string $default = null)
+    public function getPageTitle(string $default = ''): string
     {
         return $this->attributes['__pageTitle'] ?? $default;
     }
@@ -238,7 +238,7 @@ class ViewRenderer
      * Get the attributes for the renderer
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -248,7 +248,7 @@ class ViewRenderer
      * @param array $attributes
      * @return $this
      */
-    public function setAttributes(array $attributes)
+    public function setAttributes(array $attributes): self
     {
         $this->attributes = $attributes;
 
@@ -261,7 +261,7 @@ class ViewRenderer
      * @param $value
      * @return $this
      */
-    public function setAttribute($key, $value)
+    public function setAttribute(string $key, $value): self
     {
         $this->attributes[$key] = $value;
 
@@ -274,7 +274,7 @@ class ViewRenderer
      * @param $value
      * @return $this
      */
-    public function addAttribute($key, $value)
+    public function addAttribute(string $key, $value): self
     {
         if (!isset($this->attributes[$key])) {
             $this->attributes[$key] = $value;
@@ -289,7 +289,7 @@ class ViewRenderer
      * @param mixed $default
      * @return array|mixed
      */
-    public function getAttribute($key, $default = null)
+    public function getAttribute(string $key, $default = null)
     {
         if (!isset($this->attributes[$key])) {
             return $default;
@@ -302,7 +302,7 @@ class ViewRenderer
      * Get the view path
      * @return string
      */
-    public function getViewsPath()
+    public function getViewsPath(): string
     {
         return $this->viewsPath;
     }
@@ -312,7 +312,7 @@ class ViewRenderer
      * @param string $viewsPath
      * @return $this
      */
-    public function setViewsPath($viewsPath)
+    public function setViewsPath(string $viewsPath): self
     {
         if ($viewsPath) {
             $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
@@ -325,7 +325,7 @@ class ViewRenderer
      * Get the layout file
      * @return string
      */
-    public function getLayout()
+    public function getLayout(): string
     {
         return $this->layout;
     }
@@ -335,7 +335,7 @@ class ViewRenderer
      * @param string $layout
      * @return $this
      */
-    public function setLayout($layout)
+    public function setLayout(string $layout): self
     {
         $this->layout = rtrim($layout, '/\\');
 
@@ -362,7 +362,7 @@ class ViewRenderer
      * @param string $view
      * @return string
      */
-    protected function getRealView($view)
+    protected function getRealView($view): self
     {
         $sfx = File::getSuffix($view, true);
         $ext = $this->suffix;
