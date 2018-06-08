@@ -34,7 +34,7 @@ class ViewRenderer
     protected $suffix = 'php';
 
     /** @var array Allowed suffix list */
-    protected $suffixes = ['php','tpl','phtml','html'];
+    protected $suffixes = ['php', 'tpl', 'phtml', 'html'];
 
     /**
      * in layout file '...<body>{__CONTENT__}</body>...'
@@ -71,7 +71,7 @@ class ViewRenderer
      * @param string|null|false $layout Override default layout file.
      *  False - will disable use layout file
      * @return string
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function render(string $view, array $data = [], $layout = null): string
     {
@@ -89,7 +89,7 @@ class ViewRenderer
      * @param $view
      * @param array $data
      * @return string
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function renderPartial(string $view, array $data = []): string
     {
@@ -101,7 +101,7 @@ class ViewRenderer
      * @param array $data
      * @param string|null $layout override default layout file
      * @return string
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function renderBody(string $content, array $data = [], $layout = null): string
     {
@@ -113,7 +113,7 @@ class ViewRenderer
      * @param array $data
      * @param string|null $layout override default layout file
      * @return string
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function renderContent(string $content, array $data = [], $layout = null): string
     {
@@ -121,7 +121,7 @@ class ViewRenderer
         if ($layout = $layout ?: $this->layout) {
             $mark = $this->placeholder;
             $main = $this->fetch($layout, $data);
-            $content = (string)preg_replace("/$mark/", $content, $main, 1);
+            $content = (string)\str_replace($mark, $content, $main);
         }
 
         if ($this->minify) {
@@ -136,7 +136,7 @@ class ViewRenderer
      * @param array $data
      * @param bool $outputIt
      * @return string|null
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function include(string $view, array $data = [], $outputIt = true)
     {
@@ -154,7 +154,7 @@ class ViewRenderer
      * @param string $view
      * @param array $data
      * @return mixed
-     * @throws \Throwable
+     * @throws \RuntimeException
      */
     public function fetch(string $view, array $data = [])
     {
@@ -179,7 +179,7 @@ class ViewRenderer
             $output = ob_get_clean();
         } catch (\Throwable $e) { // PHP 7+
             \ob_end_clean();
-            throw $e;
+            throw new \RuntimeException("render view file [$file] is failure", -500, $e);
         }
 
         return $output;
@@ -188,6 +188,15 @@ class ViewRenderer
     /********************************************************************************
      * helper methods
      *******************************************************************************/
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function e($string): string
+    {
+        return \htmlspecialchars((string)$string);
+    }
 
     /**
      * @param $view
@@ -206,7 +215,7 @@ class ViewRenderer
      */
     protected function protectedIncludeScope(string $file, array $data)
     {
-        extract($data, EXTR_OVERWRITE);
+        \extract($data, \EXTR_OVERWRITE);
         include $file;
     }
 
@@ -214,7 +223,7 @@ class ViewRenderer
      * @param string $default
      * @return string
      */
-    public function getPageTitle(string $default = ''): string
+    public function getTitle(string $default = ''): string
     {
         return $this->attributes['__pageTitle'] ?? $default;
     }
@@ -223,11 +232,62 @@ class ViewRenderer
      * @param string $title
      * @return $this
      */
-    public function setPageTitle(string $title)
+    public function setTitle(string $title): self
     {
         $this->attributes['__pageTitle'] = $title;
 
         return $this;
+    }
+
+    /**
+     * @param string|null $default
+     * @return string|array
+     */
+    public function getKeywords(string $default = ''): string
+    {
+        return $this->attributes['__page.keywords'] ?? $default;
+    }
+
+    /**
+     * @param string|null $default
+     * @return string|array
+     */
+    public function getDescription(string $default = ''): string
+    {
+        return $this->attributes['__page.description'] ?? $default;
+    }
+
+    /**
+     * @param string $keywords
+     * @param string|null $description
+     * @return $this
+     */
+    public function setPageInfo(string $keywords, string $description = null): self
+    {
+        $this->attributes['__page.keywords'] = $keywords;
+        $this->attributes['__page.description'] = $description;
+
+        return $this;
+    }
+
+    /**
+     * reset attributes
+     * @return self
+     */
+    public function resetAttributes(): self
+    {
+        $this->attributes = [];
+
+        return $this;
+    }
+
+    /**
+     * reset
+     */
+    public function reset()
+    {
+        $this->resetAttributes();
+        $this->resetPageAssets();
     }
 
     /********************************************************************************

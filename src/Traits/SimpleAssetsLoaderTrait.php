@@ -17,6 +17,12 @@ trait SimpleAssetsLoaderTrait
 {
     /**
      * @var array
+     * [
+     *  '__cssFiles:top' => ['a.css']
+     *  '__cssCodes:top' => ['body{color: #666}']
+     *  '__jsFiles:bottom' => ['a.js']
+     *  '__jsCodes:bottom' => ['var a=2; loadContent();']
+     * ]
      */
     private $pageAssets = [];
 
@@ -295,6 +301,16 @@ trait SimpleAssetsLoaderTrait
         }
 
         return null;
+    }
+
+    /**
+     * @return self
+     */
+    public function resetPageAssets(): self
+    {
+        $this->pageAssets = [];
+
+        return $this;
     }
 
     /**

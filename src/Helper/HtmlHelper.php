@@ -82,23 +82,19 @@ class HtmlHelper
     public static function escape($data, $type = 0, $encoding = 'UTF-8')
     {
         if (\is_array($data)) {
-
             foreach ($data as $k => $v) {
                 $data[$k] = self::escape($data, $type, $encoding);
             }
-
         } else {
-
             if (!$type) {//默认使用  htmlspecialchars()
-                $data = htmlspecialchars($data, ENT_QUOTES, $encoding);
+                $data = \htmlspecialchars($data, ENT_QUOTES, $encoding);
             } else {
-                $data = htmlentities($data, ENT_QUOTES, $encoding);
+                $data = \htmlentities($data, ENT_QUOTES, $encoding);
             }
 
             //如‘&#x5FD7;’这样的16进制的html字符，为了防止这样的字符被错误转译，使用正则进行匹配，把这样的字符又转换回来。
-            if (strpos($data, '&#')) {
-                $data = preg_replace('/&((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
-                    '&\\1', $data);
+            if (\strpos($data, '&#')) {
+                $data = \preg_replace('/&((#(\d{3,5}|x[a-fA-F0-9]{4}));)/', '&\\1', $data);
             }
         }
 
@@ -115,18 +111,15 @@ class HtmlHelper
     public static function unescap($data, $type = 0, $encoding = 'UTF-8')
     {
         if (\is_array($data)) {
-
             foreach ($data as $k => $v) {
                 $data[$k] = self::unescap($data, $type, $encoding);
             }
-
         } else {
             if (!$type) {//默认使用  htmlspecialchars_decode()
-                $data = htmlspecialchars_decode($data, ENT_QUOTES);
+                $data = \htmlspecialchars_decode($data, ENT_QUOTES);
             } else {
-                $data = html_entity_decode($data, ENT_QUOTES, $encoding);
+                $data = \html_entity_decode($data, ENT_QUOTES, $encoding);
             }
-
         }
 
         return $data;
@@ -139,7 +132,7 @@ class HtmlHelper
      */
     public static function stripImages($string): string
     {
-        return preg_replace('#(<[/]?img.*>)#U', '', $string);
+        return \preg_replace('#(<[/]?img.*>)#U', '', $string);
     }
 
     /**
@@ -149,7 +142,7 @@ class HtmlHelper
      */
     public static function stripIframes($string): string
     {
-        return preg_replace('#(<[/]?iframe.*>)#U', '', $string);
+        return \preg_replace('#(<[/]?iframe.*>)#U', '', $string);
     }
 
     /**
@@ -182,14 +175,14 @@ class HtmlHelper
         // $preg = '/<img.*?src=[\"|\']?(.*?)[\"|\']?\s.*>/i';
         $preg = '/<img.+src=\"(:?.+.+\.(?:jpg|gif|bmp|bnp|png)\"?).+>/i';
 
-        preg_match_all($preg, trim($html), $images);
+        \preg_match_all($preg, trim($html), $images);
 
         if (!$images) {
             return [];
         }
 
         if ($onlySrc) {
-            return array_key_exists(1, $images) ? $images[1] : [];
+            return \array_key_exists(1, $images) ? $images[1] : [];
         }
 
         return $images;
