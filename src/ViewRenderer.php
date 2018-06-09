@@ -145,10 +145,10 @@ class ViewRenderer
     {
         if ($view) {
             if (!$outputIt) {
-                return $this->fetch($view, $data);
+                return $this->fetch($view, $data, false);
             }
 
-            echo $this->fetch($view, $data);
+            echo $this->fetch($view, $data, false);
         }
 
         return '';
@@ -159,10 +159,11 @@ class ViewRenderer
      * throws RuntimeException if $viewsPath . $view does not exist
      * @param string $view
      * @param array $data
+     * @param bool $canRelative
      * @return string
      * @throws \RuntimeException
      */
-    public function fetch(string $view, array $data = []): string
+    public function fetch(string $view, array $data = [], $canRelative = true): string
     {
         if (!$view) {
             return '';
@@ -175,7 +176,10 @@ class ViewRenderer
         }
 
         $data = \array_merge($this->attributes, $data);
-        $this->currentDir = \dirname($file) . '/';
+
+        if ($canRelative) {
+            $this->currentDir = \dirname($file) . '/';
+        }
 
         try {
             \ob_start();
@@ -186,7 +190,10 @@ class ViewRenderer
             throw new \RuntimeException("render view file [$file] is failure", -500, $e);
         }
 
-        $this->currentDir = '';
+        if ($canRelative) {
+            $this->currentDir = '';
+        }
+
         return $output;
     }
 
