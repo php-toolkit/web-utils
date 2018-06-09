@@ -7,6 +7,10 @@
 
 ### view renderer
 
+- support layout, data render
+- support simple assets manage and load
+- support include other file in a view file
+
 ```php
 $renderer = new \Toolkit\Web\ViewRenderer([
     'viewsPath' => __DIR__ . '/views',

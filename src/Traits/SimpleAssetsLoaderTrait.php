@@ -258,7 +258,7 @@ trait SimpleAssetsLoaderTrait
         /** @var array $files css files */
         if ($files = $this->getPageAsset('__cssFiles:' . $position)) {
             foreach ($files as $file) {
-                $assetHtml .= '<link href="'. $file .'" rel="stylesheet">' . PHP_EOL;
+                $assetHtml .= '<link href="' . $file . '" rel="stylesheet">' . PHP_EOL;
             }
         }
 
@@ -274,7 +274,7 @@ trait SimpleAssetsLoaderTrait
         /** @var array $files js files */
         if ($files = $this->getPageAsset('__jsFiles:' . $position)) {
             foreach ($files as $file) {
-                $assetHtml .= '<script src="'. $file .'"></script>' . PHP_EOL;
+                $assetHtml .= '<script src="' . $file . '"></script>' . PHP_EOL;
             }
         }
 

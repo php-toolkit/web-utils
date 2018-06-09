@@ -21,6 +21,9 @@ class ViewRenderer
 {
     use SimpleAssetsLoaderTrait;
 
+    /** @var string This is a temp var, it is dir path of current view file. */
+    private $currentDir = '';
+
     /** @var string Views file path. */
     protected $viewsPath = '';
 
@@ -140,16 +143,15 @@ class ViewRenderer
      */
     public function include(string $view, array $data = [], $outputIt = true): string
     {
-        if (!$view) {
-            return '';
-        }
+        if ($view) {
+            if (!$outputIt) {
+                return $this->fetch($view, $data);
+            }
 
-        if ($outputIt) {
             echo $this->fetch($view, $data);
-            return '';
         }
 
-        return $this->fetch($view, $data);
+        return '';
     }
 
     /**
@@ -173,6 +175,7 @@ class ViewRenderer
         }
 
         $data = \array_merge($this->attributes, $data);
+        $this->currentDir = \dirname($file) . '/';
 
         try {
             \ob_start();
@@ -183,6 +186,7 @@ class ViewRenderer
             throw new \RuntimeException("render view file [$file] is failure", -500, $e);
         }
 
+        $this->currentDir = '';
         return $output;
     }
 
@@ -205,9 +209,20 @@ class ViewRenderer
      */
     public function getViewFile(string $view): string
     {
-        $view = $this->getRealView($view);
+        $view = $this->formatView($view);
 
-        return File::isAbsPath($view) ? $view : $this->viewsPath . $view;
+        if (File::isAbsPath($view)) {
+            return $view;
+        }
+
+        // include file relative current file.
+        $curDir = $this->currentDir;
+
+        if ($curDir && \file_exists($curDir . $view)) {
+            return $curDir . $view;
+        }
+
+        return $this->viewsPath . $view;
     }
 
     /**
@@ -218,6 +233,23 @@ class ViewRenderer
     {
         \extract($data, \EXTR_OVERWRITE);
         include $file;
+    }
+
+    /**
+     * format view, ensure view extension name
+     * @param string $view
+     * @return string
+     */
+    protected function formatView(string $view): string
+    {
+        $sfx = File::getSuffix($view, true);
+        $ext = $this->suffix;
+
+        if ($sfx === $ext || \in_array($sfx, $this->suffixes, true)) {
+            return $view;
+        }
+
+        return $view . '.' . $ext;
     }
 
     /**
@@ -376,7 +408,7 @@ class ViewRenderer
     public function setViewsPath(string $viewsPath): self
     {
         if ($viewsPath) {
-            $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
+            $this->viewsPath = \rtrim($viewsPath, '/\\') . '/';
         }
 
         return $this;
@@ -398,7 +430,7 @@ class ViewRenderer
      */
     public function setLayout(string $layout): self
     {
-        $this->layout = rtrim($layout, '/\\');
+        $this->layout = \rtrim($layout, '/\\');
 
         return $this;
     }
@@ -417,22 +449,6 @@ class ViewRenderer
     public function setPlaceholder(string $placeholder)
     {
         $this->placeholder = $placeholder;
-    }
-
-    /**
-     * @param string $view
-     * @return string
-     */
-    protected function getRealView($view): string
-    {
-        $sfx = File::getSuffix($view, true);
-        $ext = $this->suffix;
-
-        if ($sfx === $ext || \in_array($sfx, $this->suffixes, true)) {
-            return $view;
-        }
-
-        return $view . '.' . $ext;
     }
 
     /**
