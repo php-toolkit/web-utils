@@ -73,7 +73,7 @@ class CurlHelper
         $imgData = self::execute($ch);
 
         Directory::create($savePath);
-        file_put_contents($imgFile, $imgData);
+        \file_put_contents($imgFile, $imgData);
 
         return $imgFile;
     }

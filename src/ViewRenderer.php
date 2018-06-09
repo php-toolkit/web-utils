@@ -99,11 +99,11 @@ class ViewRenderer
     /**
      * @param string $content
      * @param array $data
-     * @param string|null $layout override default layout file
+     * @param string $layout override default layout file
      * @return string
      * @throws \RuntimeException
      */
-    public function renderBody(string $content, array $data = [], $layout = null): string
+    public function renderBody(string $content, array $data = [], string $layout = ''): string
     {
         return $this->renderContent($content, $data, $layout);
     }
@@ -115,7 +115,7 @@ class ViewRenderer
      * @return string
      * @throws \RuntimeException
      */
-    public function renderContent(string $content, array $data = [], $layout = null): string
+    public function renderContent(string $content, array $data = [], string $layout = ''): string
     {
         // render layout
         if ($layout = $layout ?: $this->layout) {
@@ -138,11 +138,15 @@ class ViewRenderer
      * @return string|null
      * @throws \RuntimeException
      */
-    public function include(string $view, array $data = [], $outputIt = true)
+    public function include(string $view, array $data = [], $outputIt = true): string
     {
+        if (!$view) {
+            return '';
+        }
+
         if ($outputIt) {
             echo $this->fetch($view, $data);
-            return null;
+            return '';
         }
 
         return $this->fetch($view, $data);
@@ -153,30 +157,27 @@ class ViewRenderer
      * throws RuntimeException if $viewsPath . $view does not exist
      * @param string $view
      * @param array $data
-     * @return mixed
+     * @return string
      * @throws \RuntimeException
      */
-    public function fetch(string $view, array $data = [])
+    public function fetch(string $view, array $data = []): string
     {
+        if (!$view) {
+            return '';
+        }
+
         $file = $this->getViewFile($view);
 
         if (!\is_file($file)) {
             throw new \RuntimeException("cannot render '$view' because the view file does not exist. File: $file");
         }
 
-        /*
-        foreach ($data as $k=>$val) {
-            if (in_array($k, array_keys($this->attributes))) {
-                throw new \InvalidArgumentException("Duplicate key found in data and renderer attributes. " . $k);
-            }
-        }
-        */
         $data = \array_merge($this->attributes, $data);
 
         try {
             \ob_start();
             $this->protectedIncludeScope($file, $data);
-            $output = ob_get_clean();
+            $output = \ob_get_clean();
         } catch (\Throwable $e) { // PHP 7+
             \ob_end_clean();
             throw new \RuntimeException("render view file [$file] is failure", -500, $e);

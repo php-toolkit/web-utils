@@ -41,7 +41,7 @@ class APIAccessChecker
      */
     public function __construct($ips, $hosts = null)
     {
-        $this->hostname = \defined('HOSTNAME') ? HOSTNAME : explode('.', gethostname())[0];
+        $this->hostname = \defined('HOSTNAME') ? \HOSTNAME : explode('.', gethostname())[0];
         $this->allowedIps = (array)$ips;
         $this->allowedHosts = (array)$hosts;
     }

@@ -116,7 +116,7 @@ class RequestUtil
         if (!$_POST || !\is_array($_POST)) {
             $_POST = [];
         } else {
-            $_POST = array_map('htmlspecialchars', $_POST);
+            $_POST = \array_map('htmlspecialchars', $_POST);
         }
     }
 
@@ -154,7 +154,6 @@ class RequestUtil
         }
 
         unset($arrData);
-
         return $newArr;
     }
 
@@ -163,7 +162,7 @@ class RequestUtil
      * @param string $default
      * @return mixed
      */
-    public static function serverParam($name, $default = '')
+    public static function serverParam(string $name, $default = '')
     {
         return self::server($name, $default);
     }
@@ -174,7 +173,7 @@ class RequestUtil
      * @param  string $default
      * @return mixed
      */
-    public static function server($name, $default = '')
+    public static function server(string $name, $default = '')
     {
         $name = \strtoupper($name);
 

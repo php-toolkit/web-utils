@@ -1,16 +1,19 @@
-# php web library
+# php web tools
+
+- a simple php view renderer, front assets load manage
+- url,html,curl helper class
 
 ## usage
 
 ### view renderer
 
 ```php
-$renderer = new ViewRenderer([
+$renderer = new \Toolkit\Web\ViewRenderer([
     'viewsPath' => __DIR__ . '/views',
     'layout' => 'my-layout.php',
 ]);
 
-echo $renderer->render('home/index');
+echo $renderer->render('home/index', ['name' => 'inhere']);
 ```
 
 - setting page attrs and add assets
@@ -33,6 +36,9 @@ $renderer
 - in view template file.
 
 ```php
+/**
+ * @var \Toolkit\Web\ViewRenderer $this
+ */
 
 <!doctype html>
 <html lang="en">
@@ -42,7 +48,7 @@ $renderer
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="/assets/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
   <link href="/assets/src/app.css" rel="stylesheet">
-  <title>Hello, world!</title>
+  <title><?= $this->getTitle('Hello, world!') ?></title>
   <!-- output page assets -->
   <?php $this->dumpTopAssets() ?>
 </head>
@@ -57,7 +63,7 @@ $renderer
     {__CONTENT__}
     </div>
     <aside class="col-md-4">
-      sadebar .... 
+      sadebar .... my name is: <?= $name ?>
     </aside>
   </div>
 </main>
