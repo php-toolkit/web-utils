@@ -399,6 +399,17 @@ class ViewRenderer
     }
 
     /**
+     * alias of the getAttribute
+     * @param string $key
+     * @param null $default
+     * @return array|mixed
+     */
+    public function get(string $key, $default = null)
+    {
+        return $this->getAttribute($key, $default);
+    }
+
+    /**
      * Get the view path
      * @return string
      */
