@@ -25,10 +25,10 @@ class ViewRenderer
     private $currentDir = '';
 
     /** @var string Views file path. */
-    protected $viewsPath = '';
+    protected $viewsPath;
 
-    /** @var null|string Default layout file. */
-    protected $layout = '';
+    /** @var string Default layout file. */
+    protected $layout;
 
     /** @var array Attributes for the view */
     protected $attributes = [];
@@ -54,12 +54,12 @@ class ViewRenderer
      * @param string $layout
      * @param array $attributes
      */
-    public function __construct(string $viewsPath = null, string $layout = null, array $attributes = [])
+    public function __construct(string $viewsPath = '', string $layout = '', array $attributes = [])
     {
         $this->layout = $layout;
         $this->attributes = $attributes;
 
-        $this->setViewsPath($this->viewsPath);
+        $this->setViewsPath($viewsPath);
     }
 
     /********************************************************************************
@@ -71,12 +71,12 @@ class ViewRenderer
      * throws RuntimeException if view file does not exist
      * @param string $view
      * @param array $data extract data to view, cannot contain view as a key
-     * @param string|null|false $layout Override default layout file.
+     * @param string|false $layout Override default layout file.
      *  False - will disable use layout file
      * @return string
      * @throws \RuntimeException
      */
-    public function render(string $view, array $data = [], $layout = null): string
+    public function render(string $view, array $data = [], $layout = ''): string
     {
         $output = $this->fetch($view, $data);
 
@@ -120,11 +120,12 @@ class ViewRenderer
      */
     public function renderContent(string $content, array $data = [], string $layout = ''): string
     {
+        $layout = $layout ?: $this->layout;
+        
         // render layout
-        if ($layout = $layout ?: $this->layout) {
-            $mark = $this->placeholder;
+        if ($layout && $this->placeholder) {
             $main = $this->fetch($layout, $data);
-            $content = (string)\str_replace($mark, $content, $main);
+            $content = (string)\str_replace($this->placeholder, $content, $main);
         }
 
         if ($this->minify) {
