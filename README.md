@@ -3,9 +3,9 @@
 - a simple php view renderer, front assets load manage
 - url,html,curl helper class
 
-## usage
+## Usage
 
-### view renderer
+### View renderer
 
 - support layout, data render
 - support simple assets manage and load
@@ -86,3 +86,19 @@ $renderer
 </body>
 </html>
 ```
+
+### Flash Messages
+
+```php
+$flash = new Flash();
+
+// a page
+$flash->warning('page-msg', 'Please login to operate!');
+
+// an other page
+$msg = $flash->get('page-msg');
+```
+
+## license
+
+**[MIT](LICENSE)**
